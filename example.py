@@ -1,6 +1,6 @@
 import winrt.windows.media.control as wmc
 from datetime import datetime
-from windows_media_control import MediaManager
+from pywindowsmediacontrol.windows_media_control import MediaManager
 from termcolor import colored
 
 def on_new_source(session):
