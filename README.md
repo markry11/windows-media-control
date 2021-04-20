@@ -1,7 +1,7 @@
 # pyWindowsMediaControl
 ## General info
 Simple python wrapper for Windows Runtime Windows.Media.Control.  
-Allows to add callbacks to events emmited by MediaSessionManager and MediaSession.
+Allows to add callbacks to events emitted by MediaSessionManager and MediaSession.
 
 ## Requiremets
 Project requires:
