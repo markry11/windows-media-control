@@ -91,8 +91,3 @@ class MediaManager:
                     if MediaManager._MediaManager__on_media_properties_changed:
                         MediaManager._MediaManager__on_media_properties_changed(session, props)
             except: pass
-def to_playback_status_enum(value):
-    try:
-        return wmc.GlobalSystemMediaTransportControlsSessionPlaybackStatus(value)
-    except:
-        return value

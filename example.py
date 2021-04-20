@@ -1,5 +1,6 @@
+import winrt.windows.media.control as wmc
 from datetime import datetime
-from windows_media_control import MediaManager, to_playback_status_enum
+from windows_media_control import MediaManager
 from termcolor import colored
 
 def on_new_source(session):
@@ -23,6 +24,10 @@ def on_playback_info_changed(sender, args):
 def print_log(msg, color = 'white'):
     timestamp = datetime.now().strftime('%H:%M:%S:%f')
     print(colored(f"[{timestamp}] {msg}", color))
+
+def to_playback_status_enum(value):
+    try: return wmc.GlobalSystemMediaTransportControlsSessionPlaybackStatus(value)
+    except: return value
 
 if __name__ == "__main__":
     MediaManager.set_on_new_session(on_new_source)
