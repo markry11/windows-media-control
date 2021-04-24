@@ -45,6 +45,7 @@ class MediaManager:
 
     def __on_sessions_changed(sender, args = None):
         sessions = sender.get_sessions()
+        current_session = sender.get_current_session()
         idsCurrent = MediaManager.__current_media_sessions.keys()
         ids = list(map(lambda x: x.source_app_user_model_id, sessions))
         idsToRemove = list(filter(lambda x: not any(x == id for id in ids), idsCurrent))
@@ -57,7 +58,8 @@ class MediaManager:
             MediaManager.__current_media_sessions[session.source_app_user_model_id] = media_session
             if MediaManager.__on_new_source:
                 MediaManager.__on_new_source(session)
-            MediaManager.MediaSession.on_media_properties_change(session)
+            if current_session and session.source_app_user_model_id == current_session.source_app_user_model_id:
+                MediaManager.MediaSession.on_media_properties_change(session)
 
     def __remove_session(session):
         id = session.source_app_user_model_id
