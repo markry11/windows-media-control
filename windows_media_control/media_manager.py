@@ -42,7 +42,8 @@ class MediaManager:
         if MediaManager.__is_started:
             session_manager = async_to_sync(wmc.GlobalSystemMediaTransportControlsSessionManager.request_async)()
             session_manager.remove_sessions_changed(MediaManager.__sc_token)
-            session_manager.remove_current_session_changed(MediaManager.__csc_token)
+            if MediaManager.__csc_token:
+                session_manager.remove_current_session_changed(MediaManager.__csc_token)
             ids = list(MediaManager.__current_media_sessions.keys())
             for id in ids:
                 mpc_token = MediaManager._MediaManager__mpc_tokens.pop(id)
