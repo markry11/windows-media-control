@@ -50,6 +50,7 @@ class MediaManager:
                 session = MediaManager.__current_media_sessions.pop(id).control_session
                 session.remove_media_properties_changed(mpc_token)
                 session.remove_playback_info_changed(pic_token)
+            MediaManager.__is_started = False
 
 
     def __handle_current_session_changed(sender, args = None):

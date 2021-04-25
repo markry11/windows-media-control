@@ -37,6 +37,6 @@ if __name__ == "__main__":
     MediaManager.set_on_media_properties_changed(on_media_properties_change)
     MediaManager.set_on_current_session_changed(on_current_session_changed)
     MediaManager.start(send_mpc_after_csc = True)
-    timer = Timer(5.0, lambda *args: MediaManager.stop())
-    timer.start()
+    Timer(5.0, lambda *args: MediaManager.stop()).start()
+    Timer(10.0, lambda *args: MediaManager.start()).start()
     while True: pass
