@@ -11,6 +11,8 @@ class MediaManager:
     __current_media_sessions = {}
     __mpc_tokens = {}
     __pic_tokens = {}
+    __sc_token = None
+    __csc_token = None
     __send_mpc_after_csc = False
     def set_on_new_session(func):
         MediaManager.__on_new_source = func
@@ -32,10 +34,23 @@ class MediaManager:
             MediaManager.__send_mpc_after_csc = send_mpc_after_csc
             session_manager = async_to_sync(wmc.GlobalSystemMediaTransportControlsSessionManager.request_async)()
             MediaManager.__on_sessions_changed(session_manager)
-            session_manager.add_sessions_changed(MediaManager.__on_sessions_changed)
+            MediaManager.__sc_token = session_manager.add_sessions_changed(MediaManager.__on_sessions_changed)
             if MediaManager.__on_current_session_changed:
-                session_manager.add_current_session_changed(MediaManager.__handle_current_session_changed)
+                MediaManager.__csc_token = session_manager.add_current_session_changed(MediaManager.__handle_current_session_changed)
             MediaManager.__is_started = True
+    def stop():
+        if MediaManager.__is_started:
+            session_manager = async_to_sync(wmc.GlobalSystemMediaTransportControlsSessionManager.request_async)()
+            session_manager.remove_sessions_changed(MediaManager.__sc_token)
+            session_manager.remove_current_session_changed(MediaManager.__csc_token)
+            ids = list(MediaManager.__current_media_sessions.keys())
+            for id in ids:
+                mpc_token = MediaManager._MediaManager__mpc_tokens.pop(id)
+                pic_token = MediaManager._MediaManager__pic_tokens.pop(id)
+                session = MediaManager.__current_media_sessions.pop(id).control_session
+                session.remove_media_properties_changed(mpc_token)
+                session.remove_playback_info_changed(pic_token)
+
 
     def __handle_current_session_changed(sender, args = None):
             session = sender.get_current_session()

@@ -2,6 +2,7 @@ import winrt.windows.media.control as wmc
 from datetime import datetime
 from windows_media_control.media_manager import MediaManager
 from termcolor import colored
+from threading import Timer
 
 def on_new_source(session):
     if session is not None:
@@ -36,4 +37,6 @@ if __name__ == "__main__":
     MediaManager.set_on_media_properties_changed(on_media_properties_change)
     MediaManager.set_on_current_session_changed(on_current_session_changed)
     MediaManager.start(send_mpc_after_csc = True)
+    timer = Timer(5.0, lambda *args: MediaManager.stop())
+    timer.start()
     while True: pass
