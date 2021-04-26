@@ -9,5 +9,6 @@ setup(
     author_email='kryska.marek@gmail.com',
     license='MIT',
     packages=['windows_media_control'],
+    install_requires=["winrt", "asgiref"],
     zip_safe=False
 )
